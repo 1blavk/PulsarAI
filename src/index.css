@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+* {
+    font-family: 'Manrope', sans-serif;
+    outline-offset: unset;
+    outline: unset;
+}
+
+body {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 va undan eskilar */
+    user-select: none;
+
+}
