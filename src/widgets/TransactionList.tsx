@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
-import { ArrowUp, ArrowDown, ArrowRight } from 'lucide-react';
-import { format, isToday, isYesterday, parse } from 'date-fns';
 import type { Transaction } from "../data/transactions";
-import { TRANSACTION_DATA } from "../data/transactions";
+import { ArrowUp, ArrowDown, ArrowRight } from 'lucide-react';
+import { format, isToday, isYesterday, parse, isSameMonth } from 'date-fns';
 import { uz } from 'date-fns/locale';
 
 const TRANSACTION_COLORS = {
@@ -12,14 +11,25 @@ const TRANSACTION_COLORS = {
 };
 
 // --- Main Component ---
-const TransactionList: React.FC = () => {
+interface TransactionListProps {
+    data: Transaction[];
+    selectedMonth?: Date;
+}
 
-    // Dinamik guruhlash logikasi
+const TransactionList: React.FC<TransactionListProps> = ({ data, selectedMonth = new Date() }) => {
+
+    // Dinamik guruhlash logikasi va oylar bo'yicha filterlash
     const groupedData = useMemo(() => {
         const groups: Record<string, Transaction[]> = {};
 
-        TRANSACTION_DATA.forEach((item) => {
+        data.forEach((item) => {
             const dateObj = parse(item.date, 'dd-MM-yyyy', new Date());
+            
+            // Tanlangan oyga mos keladigan o'tkazmalarni filterlash
+            if (!isSameMonth(dateObj, selectedMonth)) {
+                return;
+            }
+
             let label = "";
 
             if (isToday(dateObj)) {
@@ -27,7 +37,7 @@ const TransactionList: React.FC = () => {
             } else if (isYesterday(dateObj)) {
                 label = "Kecha";
             } else {
-                label = format(dateObj, 'd-MMMM', { locale: uz }); // Formatingizga mos ravishda
+                label = format(dateObj, 'd-MMMM', { locale: uz });
             }
 
             if (!groups[label]) groups[label] = [];
@@ -38,7 +48,17 @@ const TransactionList: React.FC = () => {
             date,
             items
         }));
-    }, []);
+    }, [selectedMonth]);
+
+    if (groupedData.length === 0) {
+        return (
+            <div className="px-4 mt-10 text-center">
+                <p className="text-gray-500 dark:text-gray-400 text-[16px]">
+                    Ushbu oyda o'tkazmalar yo'q
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div className="px-4 mt-2">

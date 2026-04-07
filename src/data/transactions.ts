@@ -10,13 +10,13 @@ export interface Transaction {
 }
 
 
-export const TRANSACTION_DATA = [
+export const TRANSACTION_DATA: Transaction[]  = [
     // --- APREL OYI (1-apreldan 8-aprelgacha) ---
     // { id: 1, category: "Oylik-maosh", amount: 8000000, currency: "uzs", type: 'income', date: "08-04-2026", time: "09:00" },
     // { id: 2, category: "Xaridlar", amount: 120000, currency: "uzs", type: 'expense', date: "08-04-2026", time: "18:30" },
-    // { id: 3, category: "Transport", amount: 15000, currency: "uzs", type: 'expense', date: "07-04-2026", time: "08:15" },
-    // { id: 4, category: "Kafe", amount: 85000, currency: "uzs", type: 'expense', date: "07-04-2026", time: "13:00" },
-    // { id: 5, category: "Бюджет", amount: 500000, currency: "uzs", type: 'transfer', date: "07-04-2026", time: "20:00" },
+    { id: 3, category: "Transport", amount: 15000, currency: "uzs", type: 'expense', date: "07-04-2026", time: "08:15" },
+    { id: 4, category: "Kafe", amount: 85000, currency: "uzs", type: 'expense', date: "07-04-2026", time: "13:00" },
+    { id: 5, category: "Бюджет", amount: 500000, currency: "uzs", type: 'transfer', date: "07-04-2026", time: "20:00" },
     { id: 6, category: "Transport", amount: 56000, currency: "uzs", type: 'expense', date: "06-04-2026", time: "14:30" },
     { id: 7, category: "Xaridlar", amount: 56000, currency: "uzs", type: 'expense', date: "06-04-2026", time: "16:45" },
     { id: 8, category: "Бюджет", amount: 1500000, currency: "uzs", type: 'transfer', date: "05-04-2026", time: "11:00" },
@@ -68,5 +68,14 @@ export const TRANSACTION_DATA = [
     { id: 52, category: "Xizmatlar", amount: 35000, currency: "uzs", type: 'expense', date: "03-03-2026", time: "10:20" },
     { id: 53, category: "Transport", amount: 15000, currency: "uzs", type: 'expense', date: "02-03-2026", time: "09:00" },
     { id: 54, category: "O'tkazma", amount: 100000, currency: "uzs", type: 'income', date: "01-03-2026", time: "11:30" },
-    { id: 55, category: "Xaridlar", amount: 75000, currency: "uzs", type: 'expense', date: "01-03-2026", time: "16:00" }
+    { id: 55, category: "Xaridlar", amount: 75000, currency: "uzs", type: 'expense', date: "01-03-2026", time: "16:00" },
+
+
+    // Fevral
+    { id: 56, category: "Xaridlar", amount: 75000, currency: "uzs", type: 'expense', date: "01-02-2026", time: "16:00" },
+    // Yanvar
+    { id: 57, category: "Xaridlar", amount: 75000, currency: "uzs", type: 'expense', date: "01-01-2026", time: "16:00" },
+    // Dekabr
+    { id: 58, category: "Xaridlar", amount: 575000, currency: "uzs", type: 'expense', date: "01-12-2025", time: "16:00" },
+    { id: 59, category: "Biznes", amount: 1960000, currency: "uzs", type: 'income', date: "01-12-2025", time: "16:05" }
 ];
