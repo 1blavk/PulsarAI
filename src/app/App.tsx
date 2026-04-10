@@ -10,6 +10,8 @@ function App() {
     <main className="max-w-md mx-auto bg-[#F7F8FA] dark:bg-zinc-950 text-slate-900 dark:text-white min-h-screen overflow-auto">
       <Routes>
         <Route path="/" element={<MainScreen />} />
+
+        
       </Routes>
     </main>
   );

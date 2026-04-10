@@ -9,13 +9,14 @@ import { BudgetProgress } from "../widgets/BudgetProgress";
 import TransactionList from "../widgets/TransactionList";
 
 // Widgets
-import { IncomeExpenseWidget } from "../widgets/IncomeExpenseWidget";
+import { IncomeExpenseWidget } from "../widgets/DonutChart";
 
 // DATA
 import { TRANSACTION_DATA } from "../data/transactions";
 
 // Utils
 import { getMonthlyStats } from "../shared/lib/getMonthlyStats";
+import { MainActions } from "../components/MainActions";
 
 export const MainScreen = () => {
     const [filter, setFilter] = useState<{ date: Date; mode: 'monthly' | 'daily' }>({ date: new Date(), mode: 'monthly' });
@@ -32,12 +33,14 @@ export const MainScreen = () => {
     }, [filter]);
 
     return (
-        <div className="space-y-6 pb-16">
+        <div className="space-y-6 pb-28">
             {/* ==== CARDS ==== */}
             <BalanceCard balance={10000000} />
 
             {/* ==== CARDS ==== */}
-            <BudgetProgress current={225000} total={10000000}  />
+            <BudgetProgress current={225000} total={10000000} />
+
+            <MainActions></MainActions>
 
             {/* ==== CALENDAR ==== */}
             <DateFilter onFilterChange={setFilter} availableDates={availableDates} />

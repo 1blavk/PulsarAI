@@ -7,6 +7,7 @@ import {
 } from "date-fns";
 import { uz } from "date-fns/locale";
 import { Calendar } from "lucide-react";
+import { useBodyScroll } from "../../hooks/useBodyScroll";
 
 interface DateFilterProps {
     onFilterChange: (filter: { date: Date; mode: "monthly" | "daily" }) => void;
@@ -31,6 +32,9 @@ export const DateFilter = ({ onFilterChange, availableDates }: DateFilterProps) 
     const [tempMode, setTempMode] = useState(mode);
 
     const [open, setOpen] = useState(false);
+
+    // 🔥 disable body scroll when modal opens
+    useBodyScroll(open);
 
     // 🔥 data
     const years = useMemo(() => {
@@ -102,7 +106,7 @@ export const DateFilter = ({ onFilterChange, availableDates }: DateFilterProps) 
     return (
         <div className="p-4">
 
-            <div className="">
+            <div className="flex items-center justify-center">
                 {/* trigger */}
                 <button
                     onClick={() => {
@@ -110,7 +114,7 @@ export const DateFilter = ({ onFilterChange, availableDates }: DateFilterProps) 
                         setTempMode(mode);
                         setOpen(true);
                     }}
-                    className="flex items-center gap-2 bg-[#4F67CC] text-white px-4 py-2 rounded-full"
+                    className="flex items-center gap-2 bg-[#5565A1] text-white px-4 py-2 rounded-full"
                 >
                     <Calendar size={18} />
                     {label}
@@ -120,7 +124,7 @@ export const DateFilter = ({ onFilterChange, availableDates }: DateFilterProps) 
             {/* modal */}
             {open && (
                 <div
-                    className="fixed inset-0 z-50 bg-white/10 dark:bg-black/10 backdrop-blur backdrop-blur-[2px] flex items-center justify-center px-4"
+                    className="fixed inset-0 z-50 bg-white/10 dark:bg-black/10 backdrop-blur backdrop-blur-[2px] flex items-center px-4"
                     onClick={() => setOpen(false)}
                 >
                     <div

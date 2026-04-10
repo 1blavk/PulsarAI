@@ -7,7 +7,7 @@ type Props = {
 export const BalanceCard = ({ balance }: Props) => {
     return (
         /* Outer container: Added dark:bg-[#3d4a7a] to slightly deepen the brand blue in dark mode */
-        <div className="bg-[#5565A1] dark:bg-[#3d4a7a] py-8 px-4 text-black">
+        <div className="bg-[#5565A1] py-8 px-4 text-black">
 
             {/* Inner Card: 
                 - dark:bg-zinc-900: Dark background for the card
