@@ -1,4 +1,4 @@
-import { parse, isSameMonth } from 'date-fns';
+import { parse, isSameMonth, isSameDay } from 'date-fns';
 import type { Transaction } from '../../data/transactions';
 
 export interface MonthlyStats {
@@ -8,19 +8,17 @@ export interface MonthlyStats {
 }
 
 /**
- * Calculates monthly income, expense, and transfer totals for a given month
+ * Calculates income, expense, and transfer totals for a given date filter
  * 
  * @param transactions - Array of transaction data to filter and analyze
- * @param selectedMonth - The month and year to calculate stats for
+ * @param selectedDate - The date to calculate stats for
+ * @param mode - 'monthly' or 'daily' filter mode
  * @returns Object containing income, expense, and transfer totals
- * 
- * @example
- * const stats = getMonthlyStats(TRANSACTION_DATA, new Date(2026, 2, 15)); // March 2026
- * console.log(stats); // { income: 1050000, expense: 4285000, transfer: 3500000 }
  */
 export const getMonthlyStats = (
     transactions: Transaction[],
-    selectedMonth: Date = new Date()
+    selectedDate: Date = new Date(),
+    mode: 'monthly' | 'daily' = 'monthly'
 ): MonthlyStats => {
     let income = 0;
     let expense = 0;
@@ -29,8 +27,9 @@ export const getMonthlyStats = (
     transactions.forEach((transaction) => {
         const transactionDate = parse(transaction.date, 'dd-MM-yyyy', new Date());
 
-        // Filter transactions by the selected month
-        if (!isSameMonth(transactionDate, selectedMonth)) {
+        // Filter transactions by the selected date
+        const matches = mode === 'monthly' ? isSameMonth(transactionDate, selectedDate) : isSameDay(transactionDate, selectedDate);
+        if (!matches) {
             return;
         }
 

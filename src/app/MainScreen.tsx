@@ -1,5 +1,6 @@
 //// MainScreen.tsx ////
 import { useState, useMemo } from "react";
+import { parse } from 'date-fns';
 import { DateFilter } from "../features/date-filter/DateFilter";
 
 // Components
@@ -17,12 +18,18 @@ import { TRANSACTION_DATA } from "../data/transactions";
 import { getMonthlyStats } from "../shared/lib/getMonthlyStats";
 
 export const MainScreen = () => {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [filter, setFilter] = useState<{ date: Date; mode: 'monthly' | 'daily' }>({ date: new Date(), mode: 'monthly' });
 
-    // Calculate monthly stats dynamically based on selected month
-    const monthlyStats = useMemo(() => {
-        return getMonthlyStats(TRANSACTION_DATA, selectedDate);
-    }, [selectedDate]);
+    // Compute available dates
+    const availableDates = useMemo(() => {
+        const dates = TRANSACTION_DATA.map(t => parse(t.date, 'dd-MM-yyyy', new Date()));
+        return [...new Set(dates.map(d => d.getTime()))].map(time => new Date(time)).sort((a, b) => b.getTime() - a.getTime());
+    }, []);
+
+    // Calculate stats dynamically based on selected filter
+    const stats = useMemo(() => {
+        return getMonthlyStats(TRANSACTION_DATA, filter.date, filter.mode);
+    }, [filter]);
 
     return (
         <div className="space-y-6 pb-16">
@@ -30,19 +37,19 @@ export const MainScreen = () => {
             <BalanceCard balance={10000000} />
 
             {/* ==== CARDS ==== */}
-            <BudgetProgress current={225000} total={10000000} />
+            <BudgetProgress current={225000} total={10000000}  />
 
             {/* ==== CALENDAR ==== */}
-            <DateFilter onDateChange={setSelectedDate} />
+            <DateFilter onFilterChange={setFilter} availableDates={availableDates} />
 
             {/* ==== WIDGET ==== */}
-            <IncomeExpenseWidget 
-                income={monthlyStats.income} 
-                expense={monthlyStats.expense} 
+            <IncomeExpenseWidget
+                income={stats.income}
+                expense={stats.expense}
             />
 
             {/* ==== TRANSACTION LIST ==== */}
-            <TransactionList data={TRANSACTION_DATA} selectedMonth={selectedDate} />
+            <TransactionList data={TRANSACTION_DATA} filter={filter} />
         </div>
     )
 }

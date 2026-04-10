@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { Transaction } from "../data/transactions";
 import { ArrowUp, ArrowDown, ArrowRight } from 'lucide-react';
-import { format, isToday, isYesterday, parse, isSameMonth } from 'date-fns';
+import { format, isToday, isYesterday, parse, isSameMonth, isSameDay } from 'date-fns';
 import { uz } from 'date-fns/locale';
 
 const TRANSACTION_COLORS = {
@@ -13,20 +13,21 @@ const TRANSACTION_COLORS = {
 // --- Main Component ---
 interface TransactionListProps {
     data: Transaction[];
-    selectedMonth?: Date;
+    filter: { date: Date; mode: 'monthly' | 'daily' };
 }
 
-const TransactionList: React.FC<TransactionListProps> = ({ data, selectedMonth = new Date() }) => {
+const TransactionList: React.FC<TransactionListProps> = ({ data, filter }) => {
 
-    // Dinamik guruhlash logikasi va oylar bo'yicha filterlash
+    // Dinamik guruhlash logikasi va filterlash
     const groupedData = useMemo(() => {
         const groups: Record<string, Transaction[]> = {};
 
         data.forEach((item) => {
             const dateObj = parse(item.date, 'dd-MM-yyyy', new Date());
             
-            // Tanlangan oyga mos keladigan o'tkazmalarni filterlash
-            if (!isSameMonth(dateObj, selectedMonth)) {
+            // Tanlangan sanaga mos keladigan o'tkazmalarni filterlash
+            const matches = filter.mode === 'monthly' ? isSameMonth(dateObj, filter.date) : isSameDay(dateObj, filter.date);
+            if (!matches) {
                 return;
             }
 
@@ -48,7 +49,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ data, selectedMonth =
             date,
             items
         }));
-    }, [selectedMonth]);
+    }, [data, filter]);
 
     if (groupedData.length === 0) {
         return (
